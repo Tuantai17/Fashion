@@ -9,4 +9,4 @@
 .gitignore
 .env
 Dockerfile
-docker/
+!docker/start.sh
