@@ -20,42 +20,42 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
     || true
 
 
-# ---- Stage 3: runtime ----
+# ---- Stage 3: runtime (PHP-FPM + Nginx) ----
 FROM webdevops/php-nginx:8.2-alpine
 WORKDIR /app
 
-# công cụ nhỏ
-RUN apk add --no-cache bash
+RUN apk add --no-cache git bash
 
-# đặt document root cho webdevops image (không cần port 80)
 ENV WEB_DOCUMENT_ROOT=/app/public \
     APP_ENV=production \
     PHP_DISPLAY_ERRORS=0
 
-# copy toàn bộ mã nguồn (đã có .dockerignore lọc vendor/node_modules)
+# Copy toàn bộ project
 COPY . .
 
-# copy vendor và assets build
+# Copy vendor & asset đã build
 COPY --from=vendor /app/vendor /app/vendor
 COPY --from=assets /app/public /app/public
 
-# dùng cấu hình nginx của mình (lắng nghe ${PORT})
+# Copy cấu hình nginx custom (nếu có)
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-# phân quyền runtime cho user ứng dụng (không root)
+# ✅ Copy start.sh & cấp quyền khi vẫn là root
+COPY docker/start.sh /start.sh
+RUN chmod 755 /start.sh
+
+# Chuẩn bị storage, cache...
 RUN mkdir -p storage/framework/{cache,sessions,views} \
     && chown -R application:application /app
 
+# Chuyển sang user không root
 USER application
 
-# clear cache an toàn khi build
+# Clear cache Laravel
 RUN php artisan config:clear || true \
-    && php artisan route:clear  || true \
-    && php artisan view:clear   || true \
+    && php artisan route:clear || true \
+    && php artisan view:clear || true \
     && php artisan storage:link || true
 
-# script khởi động (không gọi /entrypoint để tránh switch user)
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
-
+# Chạy script start
 CMD ["/start.sh"]
