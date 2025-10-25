@@ -1,22 +1,17 @@
-# Node & Composer
 /node_modules
 /vendor
 
-# Cache & Logs
 /storage/logs/*
 /storage/framework/cache/*
 /storage/framework/sessions/*
 /storage/framework/views/*
 
-# Public symlink
 /public/storage
 
-# Git & Environment
 .git
 .gitignore
 .env
 
-# IDE / OS junk
 *.log
 *.tmp
 *.swp
@@ -26,17 +21,14 @@ Thumbs.db
 .vscode
 .idea
 
-# Docker build file (Render uses its own copy)
 Dockerfile
 
-# ✅ Cho phép giữ lại các file cần thiết
 !docker/
 !docker/start.sh
 !docker/nginx.conf
 !docker/supervisord.conf
 !docker/entrypoint.sh
 
-# Giữ lại các file frontend (vite)
 !vite.config.js
 !package.json
 !package-lock.json
