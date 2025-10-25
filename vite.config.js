@@ -7,14 +7,7 @@ export default defineConfig({
     laravel({
       input: ['resources/css/app.css', 'resources/js/app.js'],
       refresh: true,
-      // 👇 báo cho laravel-vite-plugin là bản build nằm trong /public/dist
-      buildDirectory: 'dist',
     }),
-    tailwind(),
+    tailwind(), // ✅ bắt Tailwind v4 scan & build
   ],
-  build: {
-    // 👇 xuất file build vào /public/dist để Vercel trỏ thẳng tới
-    outDir: 'public/dist',
-    emptyOutDir: true,
-  },
 })
