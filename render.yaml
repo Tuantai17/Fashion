@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: Fashion
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeploy: true
+
+    runtime:
+      runAsUser: application # ép chạy bằng user "application"
+      startCommand: "" # để trống, Dockerfile CMD ["/start.sh"] sẽ chạy
+
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://fashion-mjkl.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: shortline.proxy.rlwy.net
+      - key: DB_PORT
+        value: 30043
+      - key: DB_DATABASE
+        value: railway
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        value: CCPlxNXoojizOGKjEylbBhALYpXQaDxd
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: info
