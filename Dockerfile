@@ -30,21 +30,29 @@ ENV WEB_DOCUMENT_ROOT=/app/public \
     APP_ENV=production \
     PHP_DISPLAY_ERRORS=0
 
+# Copy toàn project
 COPY . .
+
+# Copy vendor & asset từ các stage trước
 COPY --from=vendor /app/vendor /app/vendor
 COPY --from=assets /app/public /app/public
 
+# Chuẩn bị thư mục runtime
 RUN mkdir -p storage/framework/{cache,sessions,views} \
     && chown -R application:application /app
 
+# ⬇️ Copy start.sh & set quyền khi còn là root
+COPY docker/start.sh /start.sh
+RUN chmod 755 /start.sh && chown application:application /start.sh
+
+# Sau đó mới chuyển user
 USER application
 
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
-
+# Clear cache an toàn
 RUN php artisan config:clear || true \
     && php artisan route:clear || true \
     && php artisan view:clear || true \
     && php artisan storage:link || true
 
 CMD ["/start.sh"]
+
