@@ -4,10 +4,7 @@ import tailwind from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [
-    laravel({
-      input: ['resources/css/app.css', 'resources/js/app.js'],
-      refresh: true,
-    }),
-    tailwind(), // ✅ bắt Tailwind v4 scan & build
+    laravel({ input: ['resources/css/app.css','resources/js/app.js'], refresh: true }),
+    tailwind(),
   ],
 })

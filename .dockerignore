@@ -1,6 +1,12 @@
+/node_modules
+/vendor
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/public/storage
 .git
 .gitignore
-node_modules
-dist
-.DS_Store
-.vscode
+.env
+Dockerfile
+docker/
