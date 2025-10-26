@@ -29,8 +29,17 @@ use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\UserController;
 
-Route::get('loginuser', [HomeController::class,'loginuser'])->name('site.loginuser');
-Route::post('dologin', [HomeController::class,'dologinuser'])->name('site.dologinuser');
+
+
+// routes/web.php
+Route::get('/health', fn() => response('ok', 200));
+
+
+
+
+
+Route::get('loginuser', [HomeController::class, 'loginuser'])->name('site.loginuser');
+Route::post('dologin', [HomeController::class, 'dologinuser'])->name('site.dologinuser');
 
 //shop
 Route::get('/', [HomeController::class, 'index'])->name('site.home');
@@ -38,7 +47,7 @@ Route::get('/product', [SanphamController::class, 'index'])->name('site.product'
 Route::get('/san-pham/{slug}', [sanphamController::class, 'detail'])->name('site.product.detail');
 Route::get('/detail', [SanphamController::class, 'detail'])->name('site.detail');
 Route::get('/contact', [LienheController::class, 'index'])->name('site.contact');
-Route::post('dologin', [HomeController::class,'dologinuser'])->name('site.dologinuser');
+Route::post('dologin', [HomeController::class, 'dologinuser'])->name('site.dologinuser');
 
 // Route::get('/account', [UserController::class, 'account'])->name('user.account');
 // Route::get('/register', [HomeController::class, 'register'])->name('frontend.register');
@@ -117,16 +126,16 @@ Route::get('/thuong-hieu/{slug}', [SanPhamController::class, 'productByBrand'])-
 
 //admin
 
-Route::get('login', [AuthController::class,'login'])->name('admin.login');
-Route::post('login', [AuthController::class,'dologin'])->name('admin.dologin');
+Route::get('login', [AuthController::class, 'login'])->name('admin.login');
+Route::post('login', [AuthController::class, 'dologin'])->name('admin.dologin');
 
 
-Route::prefix('admin')->middleware('loginadmin')->group(function(){
-// Route::prefix('admin')->group (function () {
-    
+Route::prefix('admin')->middleware('loginadmin')->group(function () {
+    // Route::prefix('admin')->group (function () {
+
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
-    
-     Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+    Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
     //product
     Route::prefix('product')->group(function () {
         Route::get('trash', [ProductController::class, 'trash'])->name('product.trash');
@@ -153,8 +162,6 @@ Route::prefix('admin')->middleware('loginadmin')->group(function(){
         Route::get('delete/{brand}', [BrandController::class, 'delete'])->name('brand.delete');
         Route::get('restore/{brand}', [BrandController::class, 'restore'])->name('brand.restore');
         Route::get('status/{brand}', [BrandController::class, 'status'])->name('brand.status');
-       
-        
     });
 
     Route::resource('brand', BrandController::class);
@@ -165,8 +172,7 @@ Route::prefix('admin')->middleware('loginadmin')->group(function(){
         Route::get('delete/{banner}', [BannerController::class, 'delete'])->name('banner.delete');
         Route::get('restore/{banner}', [BannerController::class, 'restore'])->name('banner.restore');
         Route::get('status/{banner}', [BannerController::class, 'status'])->name('banner.status');
-                        
-    });  
+    });
 
     Route::resource('banner', BannerController::class);
 
@@ -179,7 +185,6 @@ Route::prefix('admin')->middleware('loginadmin')->group(function(){
         Route::get('status/{contact}', [ContactController::class, 'status'])->name('contact.status');
         Route::get('contact/{id}/reply', [ContactController::class, 'replyForm'])->name('contact.reply');
         Route::post('contact/{id}/reply', [ContactController::class, 'replySubmit'])->name('contact.reply.submit');
-
     });
 
     Route::resource('contact', ContactController::class);
@@ -202,7 +207,8 @@ Route::prefix('admin')->middleware('loginadmin')->group(function(){
         Route::get('delete/{order}', [OrderController::class, 'delete'])->name('order.delete');
         Route::get('restore/{order}', [OrderController::class, 'restore'])->name('order.restore');
         Route::get('status/{order}', [OrderController::class, 'status'])->name('order.status');
-        Route::get('admin/order/{id}', [OrderController::class, 'show'])->name('order.show');    });
+        Route::get('admin/order/{id}', [OrderController::class, 'show'])->name('order.show');
+    });
 
     Route::resource('order', OrderController::class);
     //post
@@ -232,7 +238,6 @@ Route::prefix('admin')->middleware('loginadmin')->group(function(){
         Route::get('delete/{user}', [UserController::class, 'delete'])->name('user.delete');
         Route::get('restore/{user}', [UserController::class, 'restore'])->name('user.restore');
         Route::get('status/{user}', [UserController::class, 'status'])->name('user.status');
-        
     });
 
     Route::resource('user', UserController::class);

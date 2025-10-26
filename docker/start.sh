@@ -34,3 +34,4 @@ php artisan view:clear 2>/dev/null || true
 PORT="${PORT:-8080}"
 echo "==> Starting PHP built-in server on 0.0.0.0:${PORT}"
 exec php -S 0.0.0.0:$PORT -t public public/index.php
+
